@@ -32,7 +32,7 @@
 ```json
 {
     "tokenizer": "standard",
-    "filter": [ "lowercase", "starstory_chosung" ],
+    "filter": [ "lowercase", "chosung_filter" ],
     "text": "초성테스트"
 }
 ```
@@ -59,7 +59,7 @@
 ```json
 {
     "tokenizer": "standard",
-    "filter": [ "lowercase", "starstory_jamo" ],
+    "filter": [ "lowercase", "jamo_filter" ],
     "text": "자모테스트"
 }
 ```
@@ -101,7 +101,7 @@
 ```json
 {
     "tokenizer": "standard",
-    "filter": [ "lowercase", "starstory_typo_eng2kor" ],
+    "filter": [ "lowercase", "eng2kor_filter" ],
     "text": "dudansxptmxm"
 }
 ```
@@ -125,7 +125,7 @@
 ```json
 {
   "tokenizer": "standard",
-  "filter": [ "starstory_typo_kor2eng", "lowercase" ],
+  "filter": [ "kor2eng_filter", "lowercase" ],
   "text": "두히ㅑ노 ㅆㄷㄴㅅ"
 }
 ```
@@ -152,33 +152,6 @@
 }
 ```
 
-------
-## 한글 영문 발음 필터
-한글을 영문 발음 철자로 변경하는 플러그인 입니다.
-
-### 사용방법
-```json
-{
-    "tokenizer": "standard",
-    "filter": [ "starstory_english_sound", "lowercase" ],
-    "text": "무신사"
-}
-```
-
-### 결과
-```json
-{  
-  "tokens": [  
-    {  
-      "token": "starstory",
-      "start_offset": 0,
-      "end_offset": 3,
-      "type": "<HANGUL>",
-      "position": 0
-    }
-  ]
-}
-```
 
 ------
 ## Soundex 한글/영문 필터
@@ -189,7 +162,7 @@
 {
     "tokenizer": "standard",
     "filter": [
-        "starstory_soundex",
+        "soundex_filter",
         "lowercase"
     ],
     "text": "무싄사"
@@ -211,183 +184,30 @@
 }
 ```
 
-### 영문 사용법
-```json
-{
-    "tokenizer": "standard",
-    "filter": [
-    "starstory_soundex",
-    "lowercase"
-    ],
-    "text": "starstory"
-}
-```
-
-### 결과
-```json
-{  
-  "tokens": [  
-    {  
-      "token": "m252",
-      "start_offset": 0,
-      "end_offset": 7,
-      "type": "<ALPHANUM>",
-      "position": 0
-    }
-  ]
-}
-```
-
-### 한글 -> 영문변환 후 soundex 로직 적용
-```json
-{
-    "tokenizer": "standard",
-    "filter": [
-    "starstory_english_sound",
-    "starstory_soundex",
-    "lowercase"
-    ],
-    "text": "무신사"
-}
-```
-
-### 결과 
-```json
-{ 
-  "tokens": [  
-    {  
-      "token": "m252",
-      "start_offset": 0,
-      "end_offset": 3,
-      "type": "<HANGUL>",
-      "position": 0
-    }
-  ]
-}
-```
 
 ------
-## Metaphone 한글 영문 필터
-한글을 영어로 변경 후 metaphone 알고리즘으로 인코딩 한다. 
-```json
-{
-    "tokenizer": "standard",
-    "filter": [
-    "starstory_english_sound",
-    "starstory_metaphone",
-    "lowercase"
-    ],
-    "text": "무신사"
-}
-```
+## 복합 자음자 분해 필터
+복합 자음자 ㄲ, ㄸ, ㅃ, ㅆ, ㅉ를 분해하여 자동완성에서 쌍자음에 대한 처리가 가능하도록 처리 하는 필터
 
+### 한글 사용방법
 ```json
 {
     "tokenizer": "standard",
     "filter": [
-    "starstory_english_sound",
-    "starstory_metaphone",
-    "lowercase"
+        "double_consonants_filter"
     ],
-    "text": "starstory"
+    "text": "앉아"
 }
 ```
 
 ### 결과
 ```json
-{  
-  "tokens": [  
-    {  
-      "token": "msns",
+{
+  "tokens": [
+    {
+      "token": "ㅇㅏㄴㅈㅇㅏ",
       "start_offset": 0,
-      "end_offset": 3,
-      "type": "<HANGUL>",
-      "position": 0
-    }
-  ]
-}
-```
-82120 10.4%
-700844 89.5%
-### HIGHLIGHT
-```json
-{
-  "settings": {
-    "index": {
-      "analysis": {
-        "analyzer": {
-          "index_analyzer":{
-              "tokenizer": "ngram_gaga_edge_tokenizer",
-              "filter":[
-                  "starstory_highlight"
-                  ]
-          },
-          "search_analyzer":{
-              "tokenizer": "standard",
-              "filter":[
-                  "starstory_jamo"
-                  ]
-          }
-        },
-        "tokenizer": {
-          "ngram_gaga_edge_tokenizer": {
-            "token_chars": [
-              "letter"
-            ],
-            "min_gram": "1",
-            "type": "edge_ngram",
-            "max_gram": "10"
-          }
-        }
-      }
-    }
-  },
-  "mappings": {
-      "properties": {
-        "subject": {
-           "search_analyzer": "search_analyzer",
-           "analyzer": "index_analyzer",
-           "type": "text"
-        }
-      }
-   }
-}
-```
-------
-## Regular English to Korean
-영문을 한글로 변환한다.
-(query) 
-```json
-{
-    "tokenizer": "keyword",
-    "filter": [
-    "lowercase",
-    "trim",
-    "starstory_jamo"
-    ],
-    "text": "ㅁ양ㅁㄴ"
-}
-```
-(index)
-```json
-{
-    "tokenizer": "keyword",
-    "filter": [
-    "lowercase",
-    "starstory_regular_eng2kor"
-    ],
-    "text": "adidas"
-}
-```
-
-### 결과
-```json
-{  
-  "tokens": [  
-    {  
-      "token": "msns",
-      "start_offset": 0,
-      "end_offset": 3,
+      "end_offset": 2,
       "type": "<HANGUL>",
       "position": 0
     }

@@ -38,8 +38,8 @@ public class ElasticsearchPlugin extends Plugin implements AnalysisPlugin {
         // (4) 한영 오타 변환 필터
         extra.put("kor2eng_filter", Kor2EngConvertFilterFactory::new);
 
-        // (5) 한글 스펠링 체크 필터
-        extra.put("spell_filter", SpellFilterFactory::new);
+        // (5) 복합 자음 분해 필터
+        extra.put("double_consonants_filter", SpellFilterFactory::new);
 
         // (6) 한글 영문 발음 필터
         extra.put("soundex_filter", SoundexConvertFilterFactory::new);
@@ -51,7 +51,7 @@ public class ElasticsearchPlugin extends Plugin implements AnalysisPlugin {
     public Map<String, AnalysisModule.AnalysisProvider<CharFilterFactory>> getCharFilters() {
         Map<String, AnalysisModule.AnalysisProvider<CharFilterFactory>> extra = new HashMap<>();
 
-        extra.put("musinsa_char_jamo", JamoCharFilterFactory::new);
+        extra.put("jamo_char_filter", JamoCharFilterFactory::new);
         return extra;
     }
 }
