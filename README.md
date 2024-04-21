@@ -1,4 +1,4 @@
-# starstory-plugin
+# starstory-analyzer
 무신사 커스텀 검색엔진 플러그인
 
 ## 웹 다운로드 설치방법
