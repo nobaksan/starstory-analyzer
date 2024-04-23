@@ -183,34 +183,3 @@
   ]
 }
 ```
-
-
-------
-## 복합 자음자 분해 필터
-복합 자음자 ㄲ, ㄸ, ㅃ, ㅆ, ㅉ를 분해하여 자동완성에서 쌍자음에 대한 처리가 가능하도록 처리 하는 필터
-
-### 한글 사용방법
-```json
-{
-    "tokenizer": "standard",
-    "filter": [
-        "double_consonants_filter"
-    ],
-    "text": "앉아"
-}
-```
-
-### 결과
-```json
-{
-  "tokens": [
-    {
-      "token": "ㅇㅏㄴㅈㅇㅏ",
-      "start_offset": 0,
-      "end_offset": 2,
-      "type": "<HANGUL>",
-      "position": 0
-    }
-  ]
-}
-```
