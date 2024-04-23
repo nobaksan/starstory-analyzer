@@ -38,10 +38,7 @@ public class ElasticsearchPlugin extends Plugin implements AnalysisPlugin {
         // (4) 한영 오타 변환 필터
         extra.put("kor2eng_filter", Kor2EngConvertFilterFactory::new);
 
-        // (5) 복합 자음 분해 필터
-        extra.put("double_consonants_filter", SpellFilterFactory::new);
-
-        // (6) 한글 영문 발음 필터
+        // (5) 한글 단어 교정
         extra.put("soundex_filter", SoundexConvertFilterFactory::new);
 
         return extra;
