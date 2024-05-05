@@ -15,6 +15,6 @@ public class LowercaseCharFilterFactory extends AbstractCharFilterFactory {
 
     @Override
     public Reader create(Reader reader) {
-        return null;
+        return new LowercaseCharFilter(reader);
     }
 }
